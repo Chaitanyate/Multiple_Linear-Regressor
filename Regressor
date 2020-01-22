@@ -1,0 +1,55 @@
+import csv 
+import pandas as pd 
+import matplotlib.pyplot as plt
+import numpy as np
+
+Data=pd.read_csv("/home/chaitanya/Fish.csv")
+print(Data)
+
+#NO. of INdependent Variable Samples
+a=Data.iloc[:,1]
+#No. of Dependent Variable Samples
+b=Data.iloc[:,[0,2,3,4,5,6]]
+
+#USage of Encoder to remove String type and to create  Dummy Variable
+from sklearn.preprocessing import OneHotEncoder,LabelEncoder
+lab=LabelEncoder()
+b.iloc[:,0]=label.fit_transform(b.iloc[:,0])
+oneht=OneHotEncoder(categorical_features=[0])
+c=onehot.fit_transform(b).toarray()
+#for first  column its dropping
+b1=c[:,1:]
+
+#Data preProcessing MOdel
+from sklearn.cross_validation import train_test_split
+atest,atrain,btest,btrain=train_test_split(a,b,test_size=0.3,random_state=10)
+
+from sklearn.linear_model import LinearRegression
+linear=LinearRegression()
+linear.fit(btrain,atrain)
+model=linear.predict(btest)
+
+import statsmodels.formula.api as sm
+z=np.append(arr=np.ones((14,1)).astype(int),values=c,axis=1)
+
+#Now Applying Backward Elimination For Significance
+opt=z[:,[0,2,3,4,5,6]] #for 10% significant Level
+a1=sm.OLS(endog=a,exog=opt).fit()
+a1.summary()
+
+opt=z[:,[0,2,3,4,6]] #for 10% significant Level
+a1=sm.OLS(endog=a,exog=opt).fit()
+a1.summary()
+
+opt=z[:,[0,2,3,4]] #for 10% significant Level
+a1=sm.OLS(endog=a,exog=opt).fit()
+a1.summary()
+
+opt=z[:,[0,2,3]] #for 10% significant Level
+a1=sm.OLS(endog=a,exog=opt).fit()
+a1.summary()
+
+opt=z[:,[0,3]] #for 10% significant Level
+a1=sm.OLS(endog=a,exog=opt).fit()
+a1.summary()
+#aprox 17% of p
